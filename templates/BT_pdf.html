@@ -1,0 +1,580 @@
+{% for f in client_data %}
+
+{% for d in data %}
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Shaping</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,700&display=swap');
+
+		body {
+			font-family: 'Open Sans', sans-serif;
+			margin: 0px;
+			padding: 0px;
+		}
+
+		.shaping-report {
+			width: 100%;
+		}
+
+		.shaping-wrapper {
+			width: 100%;
+			max-width: 80%;
+			margin: 0 auto;
+			display: flex;
+			padding-top: 30px;
+		}
+
+		.shaping-report .shaping-logo {
+			width: 25%;
+		}
+
+		.green-brdr {
+			width: 38%;
+			border-bottom: 6px solid #7bc24d;
+			margin-bottom: 9px;
+		}
+
+		.shaping-logo img {
+			width: 100%;
+		}
+
+		.shaping-report .drk-brdr {
+			width: 37%;
+			border-bottom: 6px solid #007371;
+			margin-left: 3px;
+			margin-bottom: 9px;
+			padding-top: 0px;
+		}
+
+		.content-wrapper {
+			width: 100%;
+			max-width: 80%;
+			margin: 0 auto;
+		}
+
+		.phychology-txt h2 {
+			font-size: 32px;
+			padding: 10px;
+			margin: 0px;
+		}
+
+		.phychology-txt {
+			text-align: center;
+			background: #007371;
+			color: #fff;
+			margin-top: 50px;
+			padding: 1px;
+		}
+
+		.shaping-content table {
+			width: 100%;
+			border-top: 2px dotted #007371;
+		}
+
+		.shaping-content table tr th,
+		td {
+			text-align: left;
+			padding: 8px;
+			border: 2px dotted #007371;
+			border-top: 0px;
+			border-left: 0px;
+			border-right: 0px;
+		}
+
+		.shaping-content table tr th,
+		td:first-child {
+			font-weight: 700;
+			border-right: 2px dotted #007371;
+			width: 200px;
+			vertical-align: text-bottom;
+		}
+
+		.test-circle li::marker {
+			color: #7bc24d;
+			font-size: 24px;
+		}
+
+		.test-circle {
+			margin-top: 0px;
+			padding-left: 20px;
+		}
+
+		.brdr-left {
+			border-left: 2px dotted #007371;
+		}
+
+		.footer-wrap {
+			width: 100%;
+			max-width: 80%;
+			margin: 0 auto;
+		}
+
+		.address-contact i {
+			padding-right: 10px;
+			color: #007371;
+			font-size: 20px;
+		}
+
+		.address-contact a {
+			color: rgb(82, 86, 89);
+			margin-bottom: 0px;
+			margin-top: 5px;
+			font-size: 16px;
+			text-decoration: none;
+		}
+
+		.footer-content .address-contact {
+			position: relative;
+			z-index: 99999;
+		}
+
+		.footer-content {
+			width: 100%;
+			display: flex;
+		}
+
+		.full-address p {
+			color: rgb(82, 86, 89);
+			margin-bottom: 0px;
+			margin-top: 5px;
+		}
+
+		.full-address {
+			padding-left: 0px;
+
+		}
+
+		.full-address i {
+			color: #007371;
+			padding-right: 6px;
+			font-size: 18px;
+		}
+
+		.full-address p {
+			font-size: 13px;
+		}
+
+		.footer-section {
+			border-bottom: 20px solid #007371;
+			width: 100%;
+			margin-top: 320px;
+			padding-bottom: 30px;
+		}
+
+		.table-bottom p {
+			margin-bottom: 0px;
+			margin-top: 4px;
+		}
+
+		.table-bottom {
+			padding-top: 30px;
+			border-top: 8px solid #7bc24d;
+			margin-top: -4px;
+		}
+
+		.main-bg {
+			position: relative;
+		}
+
+		.main-bg:after {
+			position: absolute;
+			content: '';
+			background-image: url(../image/logo-shiping1.png);
+			width: 100%;
+			height: 390px;
+			bottom: 20px;
+			background-position: right;
+			background-repeat: no-repeat;
+			background-size: contain;
+		}
+
+		.header-contact i {
+			padding-right: 6px;
+			color: #007371;
+			font-size: 18px;
+		}
+
+		.header-contact a {
+			font-size: 13px;
+			margin: 0px;
+			display: flex;
+			color: rgb(82, 86, 89);
+			text-decoration: none;
+		}
+
+		.header-contact {
+			vertical-align: bottom;
+			padding-left: 0px;
+		}
+
+		/*---Media Query---*/
+		/*---Media Query---*/
+		/*---Media Query---*/
+		@media only screen and (max-width: 1399px) {
+			.full-address {
+				padding-left: 20px;
+			}
+
+			.header-contact {
+				padding-left: 20px;
+			}
+		}
+
+		@media only screen and (max-width: 1200px) {
+			.phychology-txt h2 {
+				font-size: 24px;
+			}
+
+			.shaping-content table tr th,
+			td {
+				font-size: 14px;
+			}
+
+			.test-circle li {
+				font-size: 14px;
+			}
+
+			.content-wrapper {
+				max-width: 90%;
+			}
+
+			.footer-wrap {
+				width: 100%;
+				max-width: 90%;
+			}
+
+			.shaping-wrapper {
+				max-width: 90%;
+			}
+
+			.full-address p {
+				font-size: 12px;
+			}
+
+			.header-contact a {
+				font-size: 12px;
+			}
+
+			.header-contact i {
+				font-size: 15px;
+			}
+
+			.full-address i {
+				font-size: 15px;
+			}
+
+			.full-address {
+				padding-left: 0px;
+			}
+
+			.header-contact {
+				padding-left: 0px;
+			}
+
+			.shaping-report .drk-brdr {
+				padding-top: 40px;
+			}
+		}
+
+		@media only screen and (max-width: 992px) {
+			.table-responsive {
+				overflow-x: scroll;
+			}
+
+			.main-bg:after {
+				height: 270px;
+			}
+
+			.footer-section {
+				margin-top: 130px;
+			}
+
+			.shaping-report .drk-brdr {
+				padding-top: 0px;
+			}
+
+			.full-address {
+				display: block;
+			}
+		}
+
+		@media only screen and (max-width: 768px) {
+			.address-contact i {
+				font-size: 15px;
+			}
+
+			.full-address i {
+				font-size: 15px;
+			}
+
+			.test-circle li {
+				font-size: 13px;
+			}
+
+			.shaping-content table tr th,
+			td {
+				font-size: 13px;
+			}
+
+			.test-circle li::marker {
+				font-size: 20px;
+			}
+
+			.phychology-txt h2 {
+				font-size: 16px;
+			}
+
+			.test-circle {
+				padding-left: 20px;
+			}
+
+			.green-brdr {
+				margin-bottom: 10px;
+				border-bottom: 4px solid #7bc24d;
+			}
+
+			.shaping-report .drk-brdr {
+				margin-bottom: 10px;
+				border-bottom: 4px solid #007371;
+			}
+
+			.address-contact p {
+				font-size: 14px;
+			}
+
+			.full-address p {
+				font-size: 12px;
+			}
+
+			.footer-section {
+				margin-top: 100px;
+			}
+
+			.main-bg:after {
+				height: 180px;
+			}
+
+			.table-bottom p {
+				font-size: 14px;
+			}
+
+			.table-bottom {
+				padding-top: 10px;
+			}
+
+			.shaping-report .drk-brdr {
+				padding-top: 0px;
+			}
+
+			.green-brdr {
+				display: none;
+			}
+
+			.shaping-report .drk-brdr {
+				width: 75%;
+				padding-left: 30px;
+				padding-top: 10px;
+			}
+		}
+
+		@media only screen and (max-width: 575px) {
+			.footer-content {
+				display: block;
+			}
+
+			.full-address {
+				padding-left: 0px;
+				padding-top: 10px;
+			}
+
+			.footer-wrap {
+				padding: 0px 20px;
+				max-width: 90%;
+			}
+
+			.main-bg:after {
+				height: 210px;
+			}
+
+			.footer-section {
+				margin-top: 70px;
+			}
+
+			.table-bottom p {
+				font-size: 13px;
+			}
+
+			.table-bottom {
+				padding-top: 10px;
+			}
+
+			.shaping-report .drk-brdr {
+				padding-left: 10px;
+				padding-top: 0px;
+			}
+		}
+
+		@media only screen and (max-width: 425px) {
+			.full-address p {
+				font-size: 11px;
+			}
+
+			.header-contact a {
+				font-size: 11px;
+			}
+
+			.main-bg:after {
+				height: 180px;
+			}
+		}
+	</style>
+</head>
+
+<body class="main-bg">
+	<div class="shaping-report">
+		<div class="shaping-wrapper">
+			<div class="shaping-logo">
+				<img src="http://psymphony.in/static/pdf/image/logo.png" alt="shaping-logo">
+			</div>
+			<div class="green-brdr">
+
+			</div>
+			<div class="drk-brdr">
+				<div class="full-address">
+					<p><i class="fa fa-map-marker"></i>Plot No. 1050/1, 1st Floor,
+						Opp.SMR vinay Fountainhead,
+						Miyapur, Hyderbad-49.</p>
+						<p>Email: care@shapingcdc.com</p>
+				</div>
+				<div class="header-contact">
+					<a href="#"><i class="fa fa-phone"></i><span>85000 02850</span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="shaping-content">
+		<div class="content-wrapper">
+			<div class="phychology-txt">
+				<h2>Psychological Report</h2>
+			</div>
+			<div class="table-responsive">
+				<table>
+					<tr>
+						<td>Name:</td>
+						<td colspan="3">{{f.name}}</td>
+					</tr>
+					<tr>
+						<td>Age:</td>
+						<td colspan="3">{{f.age}}Years {{f.month}}Months</td>
+					</tr>
+					<tr>
+						<td>Date of Testing </td>
+						<td>{{d.date_of_assessment|date:"d-m-Y" }} </td>
+						<td class="brdr-left"><b>Gender:</b></td>
+						<td class="brdr-left">{{f.gender}}</td>
+					</tr>
+					<tr>
+						<td>presenting_complaints<input type='textarea' name='presenting_complaints'></td>
+					</tr>
+					<tr>
+						<td>Prenatal History:</td>
+						<td colspan="3">{{d.prenatal_history}}</td>
+					</tr>
+					<tr>
+						<td>Family History:</td>
+						<td colspan="3">{{d.family_history}}</td>
+					</tr>
+					<tr>
+						<td>Development History: </td>
+						<td colspan="3">{{d.development_history}}</td>
+					</tr>
+					<tr>
+						<td>School History: </td>
+						<td colspan="3">{{d.school_history}}</td>
+					</tr>
+					<tr>
+						<td>Tests Administered:</td>
+
+						{%if d.test_administered == DST %}
+						<td colspan="3">Developmental Screening Test </td>
+
+						{%elif d.test_administered == VSMS %}
+						<td colspan="3">Vineland Social Maturity Scale</td>
+
+						{%elif d.test_administered == MISIC  %}
+						<td colspan="3">Malin’s Intelligence Scale for Indian Children</td>
+
+						{%elif d.test_administered == VSMS or d.test_administered == DST %}
+						<td colspan="3">Vineland Social Maturity Scale<br>
+							Developmental Screening Test 
+						</td>
+
+						{% elif  d.test_administered == VSMS or d.test_administered ==  MISIC%}
+						<td colspan="3">Vineland Social Maturity Scale<br>
+							Malin’s Intelligence Scale for Indian Children
+						</td>
+
+						{% elif  d.test_administered == DST or d.test_administered ==  MISIC%}
+						<td colspan="3">Developmental Screening Test<br>
+							Malin’s Intelligence Scale for Indian Children</td>
+
+							{% else %}
+							<td colspan="3">
+								Developmental Screening Test<br>
+								Vineland Social Maturity Scale<br>
+								Malin’s Intelligence Scale for Indian Children</td>
+					
+						{%endif%}
+					</tr>
+					<tr>
+						<td>Test Score: </td>
+						<td colspan="3">{{d.test_score}}</td>
+					</tr>
+
+					<tr>
+						<td>Behavioural Observation: </td>
+						<td colspan="3">{{d.behavioural_observation}}</td>
+					</tr>
+					<tr>
+						<td>Test Results: </td>
+						<td colspan="3">{{d.test_results}}</td>
+					</tr>
+
+					<tr>
+						<td>Impression:</td>
+						<td colspan='3'>{{d.impression}}</td>
+						
+						
+					</tr>
+					<tr>
+						<td>Recommendations: </td>
+						<td colspan="3">{{d.recommendations}}
+						</td>
+					</tr>
+				</table>
+				<br>
+				<br>
+				<div>
+					<div><b>Name of Therapist:</b> {{f.user.theropy}}</div>
+					<div><b>Designation:</b> BT </div>
+					<div style="display:flex; align-items: center;">
+						<b>Signature:</b>
+						<img src={{sites}} style="width: 100px; height: 100px;">
+					</div>				
+					</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
+
+{% endfor %}
+{% endfor %}

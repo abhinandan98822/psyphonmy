@@ -1,0 +1,43 @@
+<table class="table table-bordered month-data" id="month-data">
+
+    <thead>
+
+
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Theropy Name</th>
+            <th>Signature</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% if client%}
+        {% for users in client %}
+        <tr>
+            <td>
+                <input type="checkbox" id="accept" name="accept" value="yes"
+                    onchange="doalert(this,{{users.id}},'{{ users.username}}')">
+            </td>
+            <td>{{ users.id }}</td>
+            <td>{{ users.username}}</td>
+            <td>{{ users.theropy}}</td>
+            <td><img class='img-responsive' src="{{ users.signature.url}}"  style="width: 50px; height: 60px;"></td>
+            
+
+        </tr>
+        {% endfor %}
+
+        {% else %}
+        <tr>
+
+            <td colspan="12" style="text-align:center;">
+                <b>No record yet</b>
+            </td>
+
+        </tr>
+        {% endif %}
+
+    </tbody>
+</table>

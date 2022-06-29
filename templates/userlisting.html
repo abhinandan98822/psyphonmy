@@ -1,0 +1,339 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Client{% endblock %}
+{% block content %}
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+      
+      .switch input { 
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+      
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+      
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+      .slider.round {
+        border-radius: 34px;
+      }
+      
+      .slider.round:before {
+        border-radius: 50%;
+      }
+      
+
+      
+</style>
+
+<div class="container">
+    <div class="outer-bar" style="margin-bottom: 20px;">
+        <div class="input-flied-item">
+            <div class="input-search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input type="text" id="myInput" placeholder="Search..." onkeyup="myFunction()">
+            </div>
+            <div class="btn-group cli input-dropdown">
+                <select name="sort By" id="sortby" class="drop-select" style="margin-left: 0;" onchange="sort()">
+                    <option value="none" selected>Sort By</option>
+                    <option value="asc">Latest</option>
+                    <option value="dsc">Oldest</option>
+                </select>
+            </div>
+        </div>
+        <div class="btn_flied-item">
+            <div class="add-btn" style="display: flex; justify-content: right;" data-toggle="modal"
+                data-target="#exampleModal23">
+                <a href="javascript:void(0)"><button type="button" id="getvalueid" class="btn btn-primary btn-sm "
+                        value="">Edit User
+                    </button></a>
+            </div>
+        </div>
+        <div class="btn_flied-item">
+            <div class="add-btn" style="display: flex; justify-content: right;">
+                <a href="{% url 'create_user' %}"><button type="button"
+                        class="btn btn-primary btn-sm "></i>Add</button></a>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-bordered month-data" id="month-data">
+
+        <thead>
+
+
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Theropy Name</th>
+                <th>Signature</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% if user%}
+            {% for users in user %}
+            <tr>
+                <td>
+                    <label class="switch">
+                        <input type="checkbox" class="check" id="{{users.id}}" name="accept" value="yes">
+                        <span class="slider round"></span>
+                      </label>
+                    {% comment %} <input type="checkbox" id="accept" name="accept" value="yes"
+                        onchange="doalert(this,{{users.id}},'{{ users.username}}')">  {% endcomment %}
+                </td>
+                <td>{{ users.id }}</td>
+                <td>{{ users.username}}</td>
+                <td>{{ users.theropy}}</td>
+  
+                <td>{% if users.signature %}<img class='img-responsive' src="{{ users.signature.url}}"  style="width: 50px; height: 60px;">{%endif%}</td>
+                
+
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+
+                <td colspan="12" style="text-align:center;">
+                    <b>No record yet</b>
+                </td>
+
+            </tr>
+            {% endif %}
+
+
+
+        </tbody>
+    </table>
+
+    <span>Page {{ user.number }} of {{ user.paginator.num_pages }}</span>
+    <center>
+        {% if user.has_other_pages %}
+        <ul class="pagination">
+            {% if user.has_previous %}
+            <li><a href="?page={{ user.previous_page_number }}">Previous</a></li>
+            {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in user.paginator.page_range %}
+            {% if user.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if user.has_next %}
+            <li><a href="?page={{ client.next_page_number }}">Next</a></li>
+            {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+
+    </center>
+
+
+</div>
+<div class="modal fade" style="margin-top: 19px;" id="exampleModal23" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalLabel2" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header mt-5">
+            <h3 class="modal-title" id="exampleModalLabel">Edit User</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form method="post" id="modal_form_client">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form_input">
+                    <div class="demographic-item">
+                        <label for="fname">User Name:</label><br>
+                        <select style="width: 470px;" name="client" id="client" required>
+                            <option value="" selected disabled>Select User</option>
+                            {% for k in user %}
+                            <option value="{{k.id}}">{{k.username}}</option>
+                            <hr>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    <button type="button" id="addclient" class="btn btn-primary"
+                        onclick="modal_client_submit()">Edit
+                        User</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<script>
+    /*function toggle(){
+        is_staff=$('#accept').val();
+        $.ajax({
+            type:"GET",
+            data:{
+                "accept":accept,
+                'csrfmiddlewaretoken': '{{csrf_token}}'
+            },
+            
+            success: function (data) {
+                $('#month-data').html(data['html']);
+
+            },
+        })
+    }*/
+
+    function sort() {
+        sort_by = $('#sortby').val();
+        $.ajax({
+            type: "GET",
+            data: {
+                "sort_by": sort_by,
+                'csrfmiddlewaretoken': '{{csrf_token}}'
+            },
+
+            success: function (data) {
+                $('#month-data').html(data['html']);
+
+
+            },
+        });
+    }
+
+    function myFunction() {
+        search = $('#myInput').val();
+        $.ajax({
+            type: "GET",
+            data: {
+                "search": search,
+                'csrfmiddlewaretoken': '{{csrf_token}}'
+            },
+
+            success: function (data) {
+                $('#month-data').html(data['html']);
+            },
+        });
+    }
+
+
+    function doalert(checkboxElem, id, username) {
+            var checkBox = document.getElementById("accept");
+            var user_select = document.getElementById("client");
+            var opt = document.createElement('option');
+            if (checkboxElem.checked) {
+                $("#client").empty();
+                opt.value = id
+                opt.innerHTML = username
+                user_select.add(opt)
+            }
+            else {
+                var opt_asses = document.createElement('option_asses');
+                $("#client").empty();
+                opt.value = ""
+                opt.innerHTML = "Select USER"
+                opt.setAttribute("disabled", "disabled");
+                opt.setAttribute("selected", "selected");
+                user_select.add(opt)
+                
+
+  }
+}
+
+
+
+        function modal_submit() {
+            var client = document.getElementById("modal_form").elements.item(1).value;
+            if (user) {
+                window.location = "update_user/" + user;
+            }
+        }
+
+
+    function modal_client_submit() {
+            var user = document.getElementById("modal_form_client").elements.item(1).value;
+            if (user) {
+                window.location = "update_user/" + user;
+            }
+        }
+</script>
+<script>
+   
+        $(".check").change(function(event){
+            var value
+            value=0
+            if($(this).is(":checked")){
+                value =1 
+                alert(value)
+            };
+            else if($(this).not(":checked")){
+                alert("asss")
+                value=0
+                alert('unchecked')
+            };
+            var get_id=$(this).attr('id');
+            alert(get_id)
+
+            $.ajax({
+                type:'GET',
+                url:"",
+                data:{
+                "get_id":get_id,
+                'value':value
+                },
+
+                success:function(data){
+                     $('#month-data').html(data['html']);
+                }
+            })
+
+        
+
+        })
+   
+    
+</script>
+{% endblock %}

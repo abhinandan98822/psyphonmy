@@ -1,0 +1,471 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Client{% endblock %}
+{% block content %}
+<style>
+    .demographic-item input {
+        margin-right: 20px;
+    }
+
+    .demographic-item select {
+
+        margin-right: 20px;
+    }
+</style>
+<!-- form -->
+<form method="post" action="" onsubmit="return validate()">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% csrf_token %}
+    <div class="form_input">
+        <div class="container">
+            <div class="input-flied">
+                <h2>Demographic IO:</h2>
+            </div>
+            <div class="demographic-item1">
+                <label for="fname">Name:</label><br>
+                <input type="text" id="name" name="name" value="{{client.clienttable.name}}" readonly><br>
+            </div>
+            <div class="Demographic_input">
+                <span class="Demographic-left-side">
+                    <div class="demographic-outer">
+                        <div class="demographic-item">
+                            <label for="gender"> Gender</label><br>
+                            <select name="gender">
+
+                                {% if client.clienttable.gender == "Male" %}
+                                <option value="Male" selected>Male</option>{% endif %}
+                                {% if client.clienttable.gender == "Female" %}
+                                <option value="Female" selected>Female</option>{% endif %}
+                                {% if client.gender == "Other" %}
+                                <option value="Other" selected>Other</option>{% endif %}
+
+                            </select>
+                        </div>
+
+                        <div class="demographic-item">
+                            <label for="Date" class="date-picker">D.o.b</label><br>
+                            <input type="D.o.b" id="birthday" name="dob" value="{{client.clienttable.dob}}"
+                                readonly><br>
+                        </div>
+                    </div>
+
+                    <div class="demographic-outer">
+                        <div class="demographic-item">
+                            <!-- <label for="Age" class="age">Age</label> -->
+                            <label for="fname">Age (years):</label><br>
+                            <input type="text" id="age" name="age" value="{{client.clienttable.age}}" readonly><br>
+                        </div>
+
+                        <!-- form therapy -->
+                        <div class="demographic-item">
+                            <label for="Date" class="date-picker">Date of Assessment</label><br>
+                            <input type="date" id="date_ass" name="date_of_assessment"
+                                value="{{client.date_of_assessment}}" onclick="maxs()"><br>
+                            <label id="birth" style="color: #c53c3c;font-size:13px;"></label>
+                        </div>
+                    </div>
+                </span>
+            </div>
+
+            <div class="therapy-input1"></div>
+            <div class="Chief_input1">
+                <span class="Diagnerge-side">
+                    <p>Babbling</p>
+                    <textarea id="babbling" name="babbling" cols="60" row="30">{{client.babbling}}</textarea><br>
+                    <label id="babbling_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>First Word</p>
+                    <textarea id="first_word" name="first_word" cols="60" row="30">{{client.first_word}}</textarea><br>
+                    <label id="first_word_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Main Mode Comm</p>
+                    <textarea id="main_mode_comm" name="main_mode_comm" cols="60"
+                        row="30">{{client.main_mode_comm}}</textarea><br>
+                    <label id="main_mode_comm_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Family History</p>
+                    <textarea id="family_history" name="family_history" cols="60"
+                        row="30">{{client.family_history}}</textarea><br>
+                    <label id="family_history_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Motor Developments</p>
+                    <textarea id="motor_developments" name="motor_developments" cols="60"
+                        row="30">{{client.motor_developments}}</textarea><br>
+                    <label id="motor_developments_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Oro Peripheral Mechanism</p>
+                    <textarea id="oro_peripheral_mechanism" name="oro_peripheral_mechanism" cols="60"
+                        row="30">{{client.oro_peripheral_mechanism}}</textarea><br>
+                    <label id="oro_peripheral_mechanism_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Vegetative Skills</p>
+                    <textarea id="vegetative_skills" name="vegetative_skills" cols="60"
+                        row="30">{{client.vegetative_skills}}</textarea><br>
+                    <label id="vegetative_skills_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Vision</p>
+                    <textarea id="vision" name="vision" cols="60" row="30">{{client.vision}}</textarea><br>
+                    <label id="vision_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Hearing</p>
+                    <textarea id="hearing" name="hearing" cols="60" row="30">{{client.hearing}}</textarea><br>
+                    <label id="hearing_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <br>
+                <span class="Diagnerge-side">
+                    <p>Response To Name Call</p>
+                    <textarea id="response_to_name_call" name="response_to_name_call" cols="60"
+                        row="30">{{client.response_to_name_call}}</textarea><br>
+                    <label id="response_to_name_call_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <br>
+                <span class="Diagnerge-side">
+                    <p>Environmental Sounds</p>
+                    <textarea id="environmental_sounds" name="environmental_sounds" cols="60"
+                        row="30">{{client.environmental_sounds}}</textarea><br>
+                    <label id="environmental_sounds_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Eye Contact</p>
+                    <textarea id="eye_contact" name="eye_contact" cols="60"
+                        row="30">{{client.eye_contact}}</textarea><br>
+                    <label id="eye_contact_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="Diagnerge-side">
+                    <p>Attention To Sound</p>
+                    <textarea id="attention_to_sound" name="attention_to_sound" cols="60"
+                        row="30">{{client.attention_to_sound}}</textarea><br>
+                    <label id="attention_to_sound_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="Diagnerge-side">
+                    <p>Imitation To Body Movements</p>
+                    <textarea id="imitation_to_body_movements" name="imitation_to_body_movements" cols="60"
+                        row="30">{{client.imitation_to_body_movements}}</textarea><br>
+                    <label id="imitation_to_body_movements_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Imitation To Speech</p>
+                    <textarea id="imitation_to_speech" name="imitation_to_speech" cols="60"
+                        row="30">{{client.imitation_to_speech}}</textarea><br>
+                    <label id="imitation_to_speech_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="Diagnerge-side">
+                    <p>Attention Level</p>
+                    <textarea id="attention_level" name="attention_level" cols="60"
+                        row="30">{{client.attention_level}}</textarea><br>
+                    <label id="attention_level_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="Diagnerge-side">
+                    <p>Social Smile</p>
+                    <textarea id="social_smile" name="social_smile" cols="60"
+                        row="30">{{client.social_smile}}</textarea><br>
+                    <label id="social_smile_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Initiates Interaction</p>
+                    <textarea id="initiates_interaction" name="initiates_interaction" cols="60"
+                        row="30">{{client.initiates_interaction}}</textarea><br>
+                    <label id="initiates_interaction_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="Diagnerge-side">
+                    <p>Receptive Language</p>
+                    <textarea id="receptive_language" name="receptive_language" cols="60"
+                        row="30">{{client.receptive_language}}</textarea><br>
+                    <label id="receptive_language_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+
+                <span class="Diagnerge-side">
+                    <p>Expressive Language</p>
+                    <textarea id="expressive_language" name="expressive_language" cols="60"
+                        row="30">{{client.expressive_language}}</textarea><br>
+                    <label id="expressive_language_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span>
+                <span class="Diagnerge-side">
+                    <p>Provisional Diagnosis</p>
+                    <textarea id="provisional_diagnosis" name="provisional_diagnosis" cols="60"
+                        row="30">{{client.provisional_diagnosis}}</textarea><br>
+                    <label id="provisional_diagnosis_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="Diagnerge-side">
+                    <p>Recommendations</p>
+                    <textarea id="recommendations" name="recommendations" cols="60"
+                        row="30">{{client.recommendations}}</textarea><br>
+                    <label id="recommendations_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="Diagnerge-side">
+                    <p>Tests Administered</p>
+                    <textarea id="tests_administered" name="tests_administered" cols="60"
+                        row="30">{{client.tests_administered}}</textarea><br>
+                    <label id="tests_administered_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="demographic-item">
+                    <p>Reels RL Score</p>
+                    <input style="width: 500px;" type="number" id="reels_RL_score" name="reels_RL_score"
+                        value="{{client.reels_RL_score}}"><br>
+                    <label id="reels_RL_score_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+                <span class="demographic-item">
+                    <p>Reels EL Score</p>
+                    <input style="width: 500px;" type="number" id="reels_EL_score" name="reels_EL_score"
+                        value="{{client.reels_EL_score}}"><br>
+                    <label id="reels_EL_score_js" style="color: #c53c3c;font-size:13px;"></label>
+                </span><br>
+
+                <div class="btn-form-outer" style="display: flex; margin-top: 20px;">
+                    <div class="btn-form">
+                        <button class="save" id="save" value="Draft" name="draft">Save</button>
+                    </div>
+                    <div class="btn-form">
+                        <button class=" submit" id="submit" value="Submit">Submit</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- form therapy -->
+</form>
+<script>
+    function maxs() {
+        var test = document.getElementById("date_ass")
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+
+        document.getElementById("date_ass")[0].setAttribute(maxDate);
+
+    }
+
+
+
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+        $('#date_ass').attr('max', maxDate);
+
+    });
+
+    function validate() {
+        if (document.getElementById('birthday').value == '') {
+            document.getElementById('birth').innerHTML = "<b>This field is required</b>"
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('babbling').value == '') {
+            document.getElementById('babbling_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('first_word').value == '') {
+            document.getElementById('first_word_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('main_mode_comm').value == '') {
+            document.getElementById('main_mode_comm_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('family_history').value == '') {
+            document.getElementById('family_history_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('motor_developments').value == '') {
+            document.getElementById('motor_developments_js').innerHTML = "<b>This field is required</b>";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('oro_peripheral_mechanism').value == '') {
+            document.getElementById('oro_peripheral_mechanism_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('vegetative_skills').value == '') {
+            document.getElementById('vegetative_skills_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('vision').value == '') {
+            document.getElementById('vision_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('hearing').value == '') {
+            document.getElementById('hearing_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('response_to_name_call').value == '') {
+            document.getElementById('response_to_name_call_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('environmental_sounds').value == '') {
+            document.getElementById('environmental_sounds_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('eye_contact').value == '') {
+            document.getElementById('eye_contact_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('attention_to_sound').value == '') {
+            document.getElementById('attention_to_sound_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('imitation_to_body_movements').value == '') {
+            document.getElementById('imitation_to_body_movements_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('imitation_to_speech').value == '') {
+            document.getElementById('imitation_to_speech_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('attention_level').value == '') {
+            document.getElementById('attention_level_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('social_smile').value == '') {
+            document.getElementById('social_smile_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('initiates_interaction').value == '') {
+            document.getElementById('initiates_interaction_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('receptive_language').value == '') {
+            document.getElementById('receptive_language_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('expressive_language').value == '') {
+            document.getElementById('expressive_language_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('provisional_diagnosis').value == '') {
+            document.getElementById('provisional_diagnosis_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('recommendations').value == '') {
+            document.getElementById('recommendations_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('tests_administered').value == '') {
+            document.getElementById('tests_administered_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('reels_RL_score').value == '') {
+            document.getElementById('reels_RL_score_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('reels_EL_score').value == '') {
+            document.getElementById('reels_EL_score_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+    }
+    function clearErrorMsg() {
+        setTimeout(function () {
+            document.getElementById("birth").innerHTML = '';
+            document.getElementById('babbling_js').innerHTML = '';
+            document.getElementById('first_word_js').innerHTML = '';
+            document.getElementById('main_mode_comm_js').innerHTML = '';
+            document.getElementById('family_history_js').innerHTML = '';
+            document.getElementById('motor_developments_js').innerHTML = '';
+            document.getElementById('oro_peripheral_mechanism_js').innerHTML = '';
+            document.getElementById('vegetative_skills_js').innerHTML = '';
+            document.getElementById('vision_js').innerHTML = '';
+            document.getElementById('hearing_js').innerHTML = '';
+            document.getElementById('response_to_name_call_js').innerHTML = '';
+            document.getElementById('environmental_sounds_js').innerHTML = '';
+            document.getElementById('eye_contact_js').innerHTML = '';
+            document.getElementById('attention_to_sound_js').innerHTML = '';
+            document.getElementById('imitation_to_body_movements_js').innerHTML = '';
+            document.getElementById('imitation_to_speech_js').innerHTML = '';
+            document.getElementById('attention_level_js').innerHTML = '';
+            document.getElementById('social_smile_js').innerHTML = '';
+            document.getElementById('initiates_interaction_js').innerHTML = '';
+            document.getElementById('receptive_language_js').innerHTML = '';
+            document.getElementById('expressive_language_js').innerHTML = '';
+            document.getElementById('provisional_diagnosis_js').innerHTML = '';
+            document.getElementById('recommendations_js').innerHTML = '';
+            document.getElementById('tests_administered_js').innerHTML = '';
+            document.getElementById('reels_RL_score_js').innerHTML = '';
+            document.getElementById('reels_EL_score_js').innerHTML = '';
+
+
+        }, 5000);
+    }
+</script>
+{% endblock %}

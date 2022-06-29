@@ -1,0 +1,92 @@
+{% load filter %}
+<table class="table table-bordered month-data">
+
+    <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Slot Time&nbsp;<i class="arrow down"></i></th>
+            <th>Created on</th>
+            <th>Assesments</th>
+            <th>Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% if client%}
+        {% for clients in client %}
+        <tr>
+            <td>
+                <input type="checkbox" id="accept" name="accept" value="yes"
+                    onchange="doalert(this,'{{clients.id}}','{{blnk_dic|get_item:clients.id}}','{{ clients.name}}')">
+            </td>
+            <td onclick="client_modal('{{clients.id}}')"><a href="#" data-toggle="modal"
+                    data-target="#exampleModal1">{{clients.id }}</a></td>
+            <td>{{ clients.name}}</td>
+            <td>{{ clients.phone}}</td>
+            <td>{{ clients.email}}</td>
+            <td>{{ clients.slot_time_from|time:"g:iA" }}-{{clients.slot_time_to|time:"g:iA"}}</td>
+            <td>{{ clients.created_on}}</td>
+            <td>
+                {% for assessment in blnk_dic|get_item:clients.id %}
+                {% if assessment == "ST" %}
+                <a href="stassesment_table/{{clients.id}}">{{assessment}}</a>
+                {% elif assessment == "BT" %}
+                <a href="assesment/{{clients.id}}">{{assessment}}</a>
+                {% else %}
+                <a href="otassesment_table/{{clients.id}}">{{assessment}}</a>
+                {% endif %}
+                {%endfor%}
+            </td>
+            <td>
+                {{clients.remarks}}
+            </td>
+        </tr>
+        {% endfor %}
+
+        {% else %}
+        <tr>
+
+            <td colspan="12" style="text-align:center;">
+                <b>No record yet</b>
+            </td>
+
+        </tr>
+        {% endif %}
+
+    </tbody>
+
+</table>
+
+{% if paginator %}
+
+<span>Page {{ client.number }} of {{ client.paginator.num_pages }}</span>
+<center>
+    {% if client.has_other_pages %}
+    <ul class="pagination">
+        {% if client.has_previous %}
+        <li><a href="?page={{ client.previous_page_number }}">Previous</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in client.paginator.page_range %}
+        {% if client.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if client.has_next %}
+        <li><a href="?page={{ client.next_page_number }}">Next</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
+
+</center>
+{% endif %}

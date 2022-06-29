@@ -1,0 +1,88 @@
+################################assesement.html file changes
+
+>option field changes
+
+<div id='check'>
+    <div class="outer-check">
+        <div class="demographic-item">
+            <span class="Diagnerge-side">
+                <label for="tests_administered">Tests  Administered</label>
+                <select name="tests_administered">
+                    <option id="dst" value="DST">DST</option>
+                    <option id="vsms" value="VSMS">VSMS</option>
+                    <option id="misic" value="MISIC">MISIC</option>
+            </select>
+        </span>
+    </div>
+
+
+>jquery changes
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+      $('#ok').click(function(){
+        //var len=$('#done').length+1;
+        $('#check').append('<div class="outer-check"><div class="demographic-item"><span class="Diagnerge-side"><label for="tests_administered" name="tests_administered">Tests  Administered</label><select name="tests_administered"><option id="dst" value="DST">DST</option><option id="vsms" value="VSMS">VSMS</option><option id="misic" value="MISIC">MISIC</option></select></span></div>'+'<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p>Qutient</p>'+'<input type="number" id="test_results" name="qutient">'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+' </span>'+'</div>'+'<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p> Dev.Years</p>'+'<input type="number" id="test_results" name="dev_years">'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+'</span>'+'</div>'+'<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p> Dev.Month</p>'+'<input type="number" id="test_results" name="dev_months">'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+'</span>'+'</div>')
+      });
+    });    
+</script>
+
+>CSS changes
+
+<style>
+    #check .demographic-item input {
+        margin-right: 20px;
+    }
+    #check .demographic-item select {
+        margin-right: 20px;
+    }
+    #check .demographic-item {
+        WIDTH: 24%;
+        FLOAT: LEFT;
+        padding-top: 10px;
+    }  
+    #ok{
+    height: 40px;
+    margin: 35px 0;
+    width: 40px;
+    border-radius: 10px;
+    margin-bottom:0px;
+    }
+    button#ok:hover {
+        background: #8914fe;
+        color: #ffffff;
+        border: 0;
+    }
+</style>
+
+Note-remove all the <br> tags from line 138 to line 172 ("designing issue")
+
+####################################    BTupdate.html
+
+<div id='check'>
+    <div class="demographic-item qutient">
+        <span class="Diagnerge-side qutient">
+    <label for="tests_administered">Tests  Administered</label>
+    <select name="tests_administered">
+        <option id="dst" value="DST"  {% if "DST" in select_ass %} selected {%endif%}>DST</option>
+        <option id="vsms" value="VSMS" {% if "VSMS" in select_ass %} selected {%endif%}>VSMS</option>
+        <option id="misic" value="MISIC" {% if "MISIC" in select_ass %} selected {%endif%}>MISIC</option>
+</select>
+</span>
+</div>
+
+>CSS same as given above in assesement.html
+
+############################changes in models.py and admin.py and views.py
+
+line 166(models.py)
+test_admin=models.CharField(max_length=100,null=True,blank=True)
+
+
+line 735(views.py)
+test_admin=request.POST.getlist('tests_administered')
+line 772
+test_admin=test_admin
+
+line 13(admin.py)
+add (test_admin)

@@ -1,0 +1,156 @@
+{% load filter %}
+<table class="table table-bordered month-data" id="month-data" style="background: none;">
+
+    <thead>
+
+
+        <tr>
+            <th>Client Id</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Username</th>
+            <th>Assesments</th>
+            <th>Status</th>
+            <th>PDF</th>
+            {% if user.is_superuser or user.department == 'FO'  %} <th>Actions</th>{%endif%}
+        </tr>
+    </thead>
+    <tbody>
+        <!--body-->
+        {%if client%}
+        {% for clients in client %}
+        <tr>
+            <td>
+                <center><a href="#" data-toggle="modal" data-target="#exampleModal1"
+                        onclick="client_modal('{{clients.id}}','{{blnk_dic|get_item:clients.id}}','{{clients.name}}')">{{clients.id}}</a>
+                </center>
+            </td>
+            <td>{{clients.name}}</td>
+            <td>{{clients.user.department}}</td>
+            <td>{{clients.user}}</td>
+            <td style="width: 22px;">
+                {% if clients.assessment|length > 1 %}
+                <div class="demographic-item">
+                    <select name="gender" onchange="assesment_status(value,'{{clients.id}}')">
+                        <option value="" selected disabled>View Status</option>
+                        {% for assessment in blnk_dic|get_item:clients.id %}
+
+                        <option value="{{assessment}}" id="status_acess">{{assessment}}</option>
+                        {%endfor%}
+
+                    </select>
+                    {%else%}
+                    {{clients.assessment}}
+                    {%endif%}
+
+            </td>
+            <td>
+                {% if clients.assessment|length > 1 %}
+                <input type="text" id="{{clients.id}}" value="Select Assesment"
+                    style="background: transparent; border:none;">
+                {%else%}
+                {% if status|get_item:clients.id == none %}
+                Not Started
+                {%else%}
+                {{status|get_item:clients.id}}
+                {%endif%}
+                {%endif%}
+
+
+            </td>
+            <td>
+                {% if clients.assessment|length == 1 and status|get_item:clients.id == "Submited" %}
+
+                <a href="download_pdf_file/{{clients.id}}?assesment_id={{clients.assessment}}" class=" pdfclass"
+                    id="pdf{{clients.id}}" value="Select Assesment">View Pdf
+                </a>
+                {% elif clients.assessment|length == 1 and status|get_item:clients.id == "Draft" %}
+
+                <a href="download_pdf_file/{{clients.id}}?assesment_id={{clients.assessment}}" class=" pdfclass"
+                    id="pdf{{clients.id}}" value="Select Assesment">View Pdf
+                </a>
+                {%else%}
+                <a class="pdfclass" id="pdf{{clients.id}}" value="Select Assesment">NO PDF Available
+                </a>
+                {%endif%}
+            </td>
+            {% if user.is_superuser or user.department == 'FO'  %}
+            <td>
+                
+                {% if email|get_item:clients.id == False %}
+                <button class="btn btn-primary btn-sm" id="email_pdf{{clients.id}}"
+                    onclick="email_pdfs('{{clients.id}}')" class="email_pdf">Send Email</button>
+                    
+                    {% else %}
+                    
+         
+            <a class="pdfclass" id="email_pdf{{clients.id}}" class="email_pdf">Email sent</a>
+          
+       
+                    {%endif%}
+                    <input type="text" hidden id="show_js{{clients.id}}" value="Email sent" hidden style="border:none; background: none;">
+                   
+                  
+            </td>
+             
+          
+            {%endif%}
+        </tr>
+
+        {% endfor %}
+        {% else %}
+        <tr>
+
+            <td colspan="12" style="text-align:center;">
+                <b>No record yet</b>
+            </td>
+
+        </tr>
+        {% endif %}
+
+
+    </tbody>
+</table>
+
+{% if paginator %}
+
+<span>Page {{ client.number }} of {{ client.paginator.num_pages }}</span>
+<center>
+    {% if client.has_other_pages %}
+    <ul class="pagination">
+        {% if client.has_previous %}
+        <li><a href="?page={{ client.previous_page_number }}">Previous</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in client.paginator.page_range %}
+        {% if client.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if client.has_next %}
+        <li><a href="?page={{ client.next_page_number }}">Next</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
+</center>
+{% endif %}
+
+<script>
+    $(function () {
+        {% for clients in client %}
+        {% if clients.assessment|length == 1 and status|get_item:clients.id == "Submited" %}
+        console.log("ggggg")
+        $("#email_pdf" + {{ clients.id }}).show()
+    {%else%}
+    console.log("ggjiiiiii")
+    $("#email_pdf" + {{ clients.id }}).hide()
+    {% endif %}
+    {% endfor %} 
+});
+</script>

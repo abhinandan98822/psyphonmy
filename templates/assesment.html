@@ -1,0 +1,371 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Client{% endblock %}
+{% block content %}
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+<style>
+
+    #check .demographic-item input {
+        margin-right: 20px;
+    }
+
+    #check .demographic-item select {
+
+        margin-right: 20px;
+    }
+    #check .demographic-item {
+        WIDTH: 24%;
+        FLOAT: LEFT;
+        padding-top: 10px;
+    }    
+    #ok{
+
+    height: 40px;
+    margin: 35px 0;
+    width: 40px;
+    border-radius: 10px;
+    margin-bottom:0px;
+    }
+    button#ok:hover {
+        background: #8914fe;
+        color: #ffffff;
+        border: 0;
+    }
+
+</style>
+<!-- form -->
+<form method="post" action="" onsubmit="return validate()">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% csrf_token %}
+    <div class="form_input">
+        <div class="container">
+            <div class="input-flied">
+                <h2>Demographic IO:</h2>
+            </div>
+            <div class="demographic-item1">
+                <label for="fname">Name:</label><br>
+                <input type="text" id="name" name="name" value="{{client.name}}" readonly required><br>
+            </div>
+            <div class="Demographic_input">
+                <span class="Demographic-left-side">
+                    <div class="demographic-outer">
+                        <div class="demographic-item">
+                            <label for="gender"> Gender:</label><br>
+                            <select name="gender">
+                                {% if client.gender == "Male" %}
+                                <option value="Male" selected>Male</option>{% endif %}
+                                {% if client.gender == "Female" %}
+                                <option value="Female" selected>Female</option>{% endif %}
+                                {% if client.gender == "Other" %}
+                                <option value="Other" selected>Other</option>{% endif %}
+                            </select>
+                        </div>
+                        <div class="demographic-item">
+                            <label for="birthday" class="date-picker">D.O.B:</label><br>
+                            <input type="date" id="date" name="dob" value="{{client.dob}}" required onchange="getVal()"
+                                readonly><br>
+                        </div>
+                    </div>
+                    <div class="demographic-outer">
+                        <div class="demographic-item">
+                            <label for="fname">Age (years):</label><br>
+                            <input type="number" class="age" id="age" name="age" value='{{client.age}}' readonly><br>
+
+
+                        </div>
+
+                        <div class="demographic-item">
+                            <label for="Date" class="date-picker">Date of Assessment:</label><br>
+                            <input type="date" id="birthday" name="date_of_assessment" onclick="maxs()"><br>
+                            <label id="birth" style="color: #c53c3c;font-size:13px;"></label>
+                        </div>
+                    </div>
+                </span>
+            </div>
+
+
+            <!-- form therapy -->
+            <div class=" therapy-input1">
+
+                <div class="Chief_input1">
+                    <span class="Diagnerge-side">
+                        <p>Presenting Complaints</p>
+                        <textarea id="prenatal_history" name="presenting_complaints" cols="60" row="30"></textarea><br>
+                        <label id="prenatal_error_js" style="color: #c53c3c;"></label>
+
+                    <span class="Diagnerge-side">
+                        <p>Prenatal History</p>
+                        <textarea id="prenatal_history" name="prenatal_history" cols="60" row="30"></textarea><br>
+                        <label id="prenatal_error_js" style="color: #c53c3c;"></label>
+
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Family History</p>
+                        <textarea id="family_history" name="family_history" cols="60" row="30"></textarea><br>
+                        <label id="family_error_js" style="color: #c53c3c;"></label>
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Development History</p>
+                        <textarea id="development_history" name="development_history" cols="60" row="30"></textarea><br>
+                        <label id="development_error_js" style="color: #c53c3c;"></label>
+
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>School History</p>
+                        <textarea id="school_history" name="school_history" cols="60" row="30"></textarea><br>
+                        <label id="school_error_js" style="color: #c53c3c;"></label>
+
+                    </span><br>
+
+                     <div class="demographic-outer" style="margin-top: 10px;">
+                    </div>
+                   
+                        <div id='check'>
+                            <div class="outer-check">
+                                <div class="demographic-item">
+                                    <span class="Diagnerge-side">
+                                        <label for="tests_administered">Tests  Administered</label>
+                                        <select name="tests_administered">
+                                            <option id="dst" value="DST">DST</option>
+                                            <option id="vsms" value="VSMS">VSMS</option>
+                                            <option id="misic" value="MISIC">MISIC</option>
+                                    </select>
+                                </span>
+                            </div>
+                                <div class="demographic-item">
+                            <span class="Diagnerge-side">
+                                <p>Qutient</p>
+                                <input type="number" id="test_results" name="qutient">
+                                <label id="test_error_js" style="color: #c53c3c;font-size:13px;"></label>
+                            </span>
+                        </div>
+                        <div class="demographic-item">
+                            <span class="Diagnerge-side">
+                                <p> Dev.Years</p>
+                                <input type="number" id="test_results" name="dev_years">
+                                <label id="test_error_js" style="color: #c53c3c;font-size:13px;"></label>
+
+                            </span>
+                        </div>
+                        <div class="demographic-item">
+                            <span class="Diagnerge-side">
+                                <p> Dev.Months</p>
+                                <input type="number" id="test_results" name="dev_months">
+                                <label id="test_error_js" style="color: #c53c3c;font-size:13px;"></label>
+                            </span>
+                        </div>
+                            </div>
+
+                        <button type='button' id='ok'>+</button>
+                    </div>
+                    <span class="Diagnerge-side">
+                        <p>Behavioural Observation</p>
+                        <textarea id="behavioural_observation" name="behavioural_observation" cols="60"
+                            row="30"></textarea><br>
+                        <label id="behavioural_error_js" style="color: #c53c3c;"></label>
+
+                        <span class="Diagnerge-side">
+                            <p>Test Results</p>
+                            <textarea id="behavioural_observation" name="test_results" cols="60"
+                                row="30"></textarea><br>
+                            <label id="behavioural_error_js" style="color: #c53c3c;"></label>
+
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Impression</p>
+                        <textarea id="impression" name="impression" cols="60" row="30"></textarea><br>
+                        <label id="impression_error_js" style="color: #c53c3c;"></label>
+
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Recommendations</p>
+                        <textarea id="recommendations" name="recommendations" cols="60" row="30"></textarea><br>
+                        <label id="recommendations_error_js" style="color: #c53c3c;"></label>
+
+                    </span>
+                    <input type="hidden" value="{{client.name}}" name="name">
+                    <input type="hidden" value="{{client.address}}" name="address">
+                    <input type="hidden" value="{{client.email}}" name="email">
+                    <div class="btn-form-outer" style="display: flex; margin-top: 20px;">
+                        <div class="btn-form">
+                            <button class="save" id="save" value="Draft" name="draft">Save</button>
+                        </div>
+                        <div class="btn-form">
+                            <button class="submit" id="submit" value="Submit">Submit</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- form therapy -->
+    
+</form>
+<script>
+
+    //$('.js-example-basic-multiple').select2();
+
+
+    {% if request.POST.tests_administered == 'DST' %}
+    document.getElementById('dst').selected = true   {% endif %}
+
+    {% if request.POST.tests_administered == 'VSMS' %}
+    document.getElementById('vsms').selected = true   {% endif %}
+
+    {% if request.POST.tests_administered == 'MISIC' %}
+    document.getElementById('misic').selected = true
+
+    {% endif %}
+
+
+    function maxs() {
+        var test = document.getElementById("birthday")
+
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+
+        document.getElementById("birthday")[0].setAttribute(maxDate);
+
+    }
+
+
+
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+        $('#birthday').attr('max', maxDate);
+
+
+
+    });
+
+    function validate() {
+        if (document.getElementById('birthday').value == '') {
+            document.getElementById('birth').innerHTML = "<b>This field is required</b>"
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('prenatal_history').value == '') {
+            document.getElementById('prenatal_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('family_history').value == '') {
+            document.getElementById('family_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('development_history').value == '') {
+            document.getElementById('development_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('school_history').value == '') {
+            document.getElementById('school_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('test_results').value == '') {
+            document.getElementById('test_error_js').innerHTML = "<b>This field is required</b>";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('behavioural_observation').value == '') {
+            document.getElementById('behavioural_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('impression').value == '') {
+            document.getElementById('impression_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('recommendations').value == '') {
+            document.getElementById('recommendations_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+
+
+
+
+    }
+    function clearErrorMsg() {
+        setTimeout(function () {
+            document.getElementById("birth").innerHTML = '';
+            document.getElementById('prenatal_error_js').innerHTML = '';
+            document.getElementById('family_error_js').innerHTML = '';
+            document.getElementById('development_error_js').innerHTML = '';
+            document.getElementById('school_error_js').innerHTML = '';
+            document.getElementById('test_error_js').innerHTML = '';
+            document.getElementById('behavioural_error_js').innerHTML = '';
+            document.getElementById('impression_error_js').innerHTML = '';
+            document.getElementById('recommendations_error_js').innerHTML = '';
+
+        }, 5000);
+    }
+
+    
+</script>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+      $('#ok').click(function(){
+        //var len=$('#done').length+1;
+        $('#check').append('<div class="outer-check"><div class="demographic-item"><span class="Diagnerge-side"><label for="tests_administered" name="tests_administered">Tests  Administered</label><select name="tests_administered"><option id="dst" value="DST">DST</option><option id="vsms" value="VSMS">VSMS</option><option id="misic" value="MISIC">MISIC</option></select></span></div>'+'<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p>Qutient</p>'+'<input type="number" id="test_results" name="qutient">'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+' </span>'+'</div>'+'<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p> Dev.Years</p>'+'<input type="number" id="test_results" name="dev_years">'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+'</span>'+'</div>'+'<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p> Dev.Month</p>'+'<input type="number" id="test_results" name="dev_months">'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+'</span>'+'</div>')
+      });
+    });
+     
+</script>
+// $('select').selectpicker();
+  
+  
+
+{% comment %} <script>
+</script> {% endcomment %}
+{% endblock %}

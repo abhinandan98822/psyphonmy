@@ -1,0 +1,398 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Client{% endblock %}
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+<style>
+    #check .demographic-item input {
+        margin-right: 20px;
+    }
+
+    #check .demographic-item select {
+
+        margin-right: 20px;
+    }
+    #check .demographic-item {
+        WIDTH: 24%;
+        FLOAT: LEFT;
+        padding-top: 10px;
+    }    
+    #ok{
+
+    height: 40px;
+    margin: 35px 0;
+    width: 40px;
+    border-radius: 10px;
+    margin-bottom:0px;
+    }
+    button#ok:hover {
+        background: #8914fe;
+        color: #ffffff;
+        border: 0;
+    }
+
+    
+</style>
+
+<!-- form -->
+<form method="post" action="" onsubmit="return validate()">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% csrf_token %}
+    <div class="form_input">
+        <div class="container">
+            <div class="input-flied">
+                <h2>Demographic IO:</h2>
+            </div>
+            <div class="demographic-item1">
+                <label for="fname">Name:</label><br>
+                <input type="text" id="name" name="name" value="{{client.clienttable.name}}" readonly ><br>
+            </div>
+            <div class="Demographic_input">
+                <span class="Demographic-left-side">
+                    <div class="demographic-outer">
+                        <div class="demographic-item">
+                            <label for="gender"> Gender</label><br>
+                            <select name="gender">
+
+                                {% if client.clienttable.gender == "Male" %}
+                                <option value="Male" selected>Male</option>{% endif %}
+                                {% if client.clienttable.gender == "Female" %}
+                                <option value="Female" selected>Female</option>{% endif %}
+                                {% if client.gender == "Other" %}
+                                <option value="Other" selected>Other</option>{% endif %}
+
+                            </select>
+                        </div>
+
+                        <div class="demographic-item">
+                            <label for="Date" class="date-picker">D.o.b</label><br>
+                            <input type="D.o.b" id="birthday" name="dob" value="{{client.clienttable.dob}}" 
+                                readonly><br>
+                        </div>
+                    </div>
+
+                    <div class="demographic-outer">
+                        <div class="demographic-item">
+                            <!-- <label for="Age" class="age">Age</label> -->
+                            <label for="fname">Age (years):</label><br>
+                            <input type="text" id="age" name="age" value="{{client.clienttable.age}}" 
+                                readonly><br>
+                        </div>
+
+                        <!-- form therapy -->
+                        <div class="demographic-item">
+                            <label for="Date" class="date-picker">Date of Assessment</label><br>
+                            <input type="date" id="asses_max" name="date_of_assessment"
+                                value="{{client.date_of_assessment}}" onclick="maxs()" ><br>
+                                 <label id="birth" style="color: #c53c3c;font-size:13px;"></label>
+                        </div>
+                    </div>
+                </span>
+            </div>
+
+            <div class="therapy-input1">
+                <div class="Chief_input1">
+                    <span class="Diagnerge-side">
+                        <p>Presenting Complaints</p>
+                        <textarea id="prenatal_history" name="presenting_complaints" cols="60" row="30" value=""
+                            >{{client.presenting_complaints}}</textarea><br>
+                        <label id="prenatal_error_js" style="color: #c53c3c;"></label>
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Prenatal History</p>
+                        <textarea id="prenatal_history" name="prenatal_history" cols="60" row="30" value=""
+                            >{{client.prenatal_history}}</textarea><br>
+                        <label id="prenatal_error_js" style="color: #c53c3c;"></label>
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Family History</p>
+                        <textarea id="family_history" name="family_history" cols="60" row="30"
+                            >{{client.family_history}}</textarea><br>
+                        <label id="family_error_js" style="color: #c53c3c;"></label>
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Development History</p>
+                        <textarea id="development_history" name="development_history" cols="60" row="30" value=""
+                            >{{client.development_history}}</textarea><br>
+                        <label id="development_error_js" style="color: #c53c3c;"></label>
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>School History</p>
+                        <textarea id="school_history" name="school_history" cols="60" row="30" value=""
+                            >{{client.school_history}}</textarea><br>
+                        <label id="school_error_js" style="color: #c53c3c;"></label>
+                    </span><br>
+
+                    <div class="demographic-outer" style="margin-top: 10px;">
+                        {% comment %} <div class="demographic-item">
+                            <span class="Diagnerge-side">
+                                <label for="tests_administered"> Tests Administered</label><br>
+                                <select name="tests_administered" class="js-example-basic-multiple" multiple="multiple">
+
+                                    <option value="DST" id="dst" {% if "DST" in select_ass %} selected {%endif%}>DST
+                                    </option>
+                                    <option value="VSMS" id="vsms" {% if "VSMS" in select_ass %} selected {%endif%}>VSMS
+                                    </option>
+                                    <option value="MISIC" id="misic" {% if "MISIC" in select_ass %} selected {%endif%}>
+                                        MISIC</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div> {% endcomment %}
+
+                    <div id='check'>
+                        <div class="demographic-item qutient">
+                            <span class="Diagnerge-side qutient">
+                        <label for="tests_administered">Tests  Administered</label>
+                        <select name="tests_administered">
+                            <option id="dst" value="DST"  {% if "DST" in select_ass %} selected {%endif%}>DST</option>
+                            <option id="vsms" value="VSMS" {% if "VSMS" in select_ass %} selected {%endif%}>VSMS</option>
+                            <option id="misic" value="MISIC" {% if "MISIC" in select_ass %} selected {%endif%}>MISIC</option>
+                    </select>
+                </span>
+            </div>
+
+
+                            <div class="demographic-item qutient">
+                        <span class="Diagnerge-side qutient">
+                            <p>Qutient</p>
+                            <input type="number" id="qutient_client" name="qutient" value="{{get_qutient.0}}"><br>
+                
+                            <label id="test_error_js" style="color: #c53c3c;font-size:13px;"></label>
+                        </span>
+                    </div>
+                    <div class="demographic-item">
+                        <span class="Diagnerge-side">
+                            <p>Dev.Years</p>
+                            <input type="number" id="test_results" name="dev_years" value="{{get_year.0}}"><br>
+                            <label id="test_error_js" style="color: #c53c3c;font-size:13px;"></label>
+                        </span>
+                    </div>
+                    {% comment %} {% endfor %} {% endcomment %}
+
+                    {% comment %} {% for months in client.dev_months %} {% endcomment %}
+                    <div class="demographic-item">
+                        <span class="Diagnerge-side">
+                            <p> Dev.Months</p>
+                            <input type="number" id="test_results" name="dev_months" value = "{{get_month.0}}"><br>
+                            <label id="test_error_js" style="color: #c53c3c;font-size:13px;"></label>
+                        </span>
+                    </div>
+                        </div>
+
+                        <button type='button' id='ok'>+</button>
+
+                </div>
+               
+                    <span class="Diagnerge-side">
+                        <p>Behavioural Observation</p>
+                        <textarea id="behavioural_observation" name="behavioural_observation" cols="60" row="30" value=""
+                            >{{client.behavioural_observation}}</textarea><br>
+                        <label id="behavioural_error_js" style="color: #c53c3c;"></label>
+                        <span class="Diagnerge-side">
+                            <p>Test Results</p>
+                            <textarea id="behavioural_observation" name="test_result" cols="60" row="30" value=""
+                                >{{client.test_results}}</textarea><br>
+                            <label id="behavioural_error_js" style="color: #c53c3c;"></label>
+        
+
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Impression</p>
+                        <textarea id="impression" name="impression" cols="60" row="30" value=""
+                            >{{client.impression}}</textarea><br>
+                        <label id="impression_error_js" style="color: #c53c3c;"></label>
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Recommendations</p>
+                        <textarea id="recommendations" name="recommendations" cols="60" row="30" value=""
+                            >{{client.recommendations}}</textarea><br>
+                        <label id="recommendations_error_js" style="color: #c53c3c;"></label>
+                    </span>
+                    <span class="Diagnerge-side">
+                        <p>Email Sent</p>
+                        {% if client.email_sent == "on" %}
+                        <input type="checkbox" name="email_sent" checked>
+                        {%else%}
+                        <input type="checkbox" name="email_sent">
+                        {%endif%}
+                    </span>
+
+                    <div class="btn-form-outer" style="display: flex; margin-top: 20px; ">
+
+                        <div class="btn-form ">
+
+                            <button class="save" id="save" value="Draft" name="draft">Save</button>
+
+                        </div>
+                        <div class="btn-form">
+                            <button class="submit" id="submit" value="Submit">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- form therapy -->
+</form>
+<script>
+    console.log("igiii");
+    
+    //$('input[id^="qutient_client"]').each(function(input){
+        ///console.log({{get_qutient}})
+               
+       // var value = {{count_qutient}};
+        
+      //  console.log(value, "value")
+        //if (value>1) {
+
+            //for (let i = 1; i < value; i++) {
+               // val = i;
+                
+                   // qutients = {{get_qutient}}[val]
+                   // console.log(qutients, "val")
+
+
+                //console.log({{get_qutient}})
+              //  $('#check').append('<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p>Qutient</p>'+'<input type="number" class="qutient_clients" id=i name="qutient" value="">'+'<br>'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+' </span>'+'</div>'+'<br>'+'<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p> Dev.Years</p>'+'<input type="number" id="test_results" name="dev_years">'+'<br>'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+'</span>'+'</div>'+''+'<div class="demographic-item">'+'<span class="Diagnerge-side">'+'<p> Dev.Month</p>'+'<input type="number" id="test_results" name="dev_months">'+'<br>'+'<label id="test_error_js" style="color: #c53c3c;font-size:13px;">'+'</label>'+'</span>'+'</div>')
+                   // console.log(qutients, "qutients")
+
+                   // console.log(document.getElementsByClassName('qutient_clients'), "jdkscm")
+
+                
+
+             // }
+         //     document.getElementsByClassName('qutient_clients').value=qutients
+
+       // }
+        //});
+
+
+
+    $('.js-example-basic-multiple').select2(); 
+
+    function maxs() {
+        var test = document.getElementById("asses_max")
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+
+        document.getElementById("asses_max")[0].setAttribute(maxDate);
+
+    }
+
+
+
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+        $('#asses_max').attr('max', maxDate);
+
+
+
+    });
+
+    function validate() {
+        if (document.getElementById('asses_max').value == '') {
+            document.getElementById('birth').innerHTML = "<b>This field is required</b>"
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('prenatal_history').value == '') {
+            document.getElementById('prenatal_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('family_history').value == '') {
+            document.getElementById('family_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('development_history').value == '') {
+            document.getElementById('development_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('school_history').value == '') {
+            document.getElementById('school_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('test_results').value == '') {
+            document.getElementById('test_error_js').innerHTML = "<b>This field is required</b>";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('behavioural_observation').value == '') {
+            document.getElementById('behavioural_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('impression').value == '') {
+            document.getElementById('impression_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+        if (document.getElementById('recommendations').value == '') {
+            document.getElementById('recommendations_error_js').innerHTML = "This field is required";
+            clearErrorMsg();
+            return false
+
+        }
+
+
+
+
+    }
+    function clearErrorMsg() {
+        setTimeout(function () {
+            document.getElementById("birth").innerHTML = '';
+            document.getElementById('prenatal_error_js').innerHTML = '';
+            document.getElementById('family_error_js').innerHTML = '';
+            document.getElementById('development_error_js').innerHTML = '';
+            document.getElementById('school_error_js').innerHTML = '';
+            document.getElementById('test_error_js').innerHTML = '';
+            document.getElementById('behavioural_error_js').innerHTML = '';
+            document.getElementById('impression_error_js').innerHTML = '';
+            document.getElementById('recommendations_error_js').innerHTML = '';
+
+        }, 5000);
+    }
+
+
+</script>
+
+{% endblock %}
